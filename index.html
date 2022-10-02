@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Details</title>
+  </head>
+  <body class="bg-gray-300" style="font-family: Roboto">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <div class="px-12 pb-10 pt-10">
+      <class class="flex justify-center pb-10 text-xl">Enter User Id</class>
+      <div class="w-full mb-2 flex flex-col justify-center">
+        <div class="flex justify-center">
+          <input
+            type="number"
+            id="input"
+            min="1"
+            max="10"
+            placeholder="UserId"
+            class="px-8 w-1/2 border rounded py-2 text-gray-700 focus:outline-none items-center"
+          />
+        </div>
+        <div class="flex justify-center">
+          <button
+            type="submit"
+            class="w-1/4 mt-6 py-2 rounded bg-blue-500 text-gray-100 focus:outline-none"
+            onclick="onSubmit()"
+          >
+            Get Details
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const basePath = "https://jsonplaceholder.typicode.com";
+
+      async function getUserComments(userEmail) {
+        return axios.get(`${basePath}/comments?email=${userEmail}`);
+      }
+
+      function getUserPosts(userId) {
+        return axios.get(`${basePath}/posts?userId=${userId}`);
+      }
+
+      function getUserAlbums(userId) {
+        return axios.get(`${basePath}/albums?userId=${userId}`);
+      }
+
+      function getUserPhotos(albumId) {
+        return axios.get(`${basePath}/photos?albumId=${albumId}`);
+      }
+
+      function getUserTodos(userId) {
+        return axios.get(`${basePath}/todos?userId=${userId}`);
+      }
+
+      async function getUserDetails(userId) {
+        try {
+          const userDetails = await axios.get(`${basePath}/users?id=${userId}`);
+
+          let user = userDetails.data[0];
+
+          const userPosts = (await getUserPosts(userId)).data;
+          const userComments = (await getUserComments(userDetails.email)).data;
+          const userTodos = (await getUserTodos(userId)).data;
+          const userAlbums = (await getUserAlbums(userId)).data;
+
+          let userPhotos = [];
+
+          for (const album of userAlbums) {
+            const posts = (await getUserPhotos(album.id)).data;
+            userPhotos = userPhotos.concat(posts);
+          }
+
+          user = {
+            ...user,
+            posts: userPosts,
+            comments: userComments,
+            todos: userTodos,
+            albums: userAlbums,
+            photos: userPhotos,
+          };
+
+          console.log(user);
+          alert("Check Console for User Details");
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      async function onSubmit() {
+        const userId = parseInt(document.getElementById("input").value, 10);
+        if (userId > 10 || userId < 1) {
+          alert("Invalid UserId [min: 1; max: 10]");
+        } else {
+          await getUserDetails(userId, basePath, axios);
+        }
+        try {
+        } catch (err) {
+          console.log(err);
+        } finally {
+          document.getElementById("input").value = null;
+        }
+      }
+    </script>
+  </body>
+</html>

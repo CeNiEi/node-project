@@ -29,6 +29,46 @@
           >
             Get Details
           </button>
+
+          </div>
+          <div class ="flex-col mt-10">
+              <div class="flex-row pb-5">
+                UserID -> <p id="userId"></p>
+              </div>
+              <div class="flex-row pb-5">
+                Address -> <p id="userAddress"></p>
+              </div>
+              <div class="flex-row pb-5">
+                Albums -> <ul id="userAlbums"></ul>
+              </div>
+              <div class="flex-row pb-5">
+                Comments -> <p id="userComments"></p>
+              </div>
+              <div class="flex-row pb-5">
+                Company -> <p id="userCompany"></p>
+              </div>
+              <div class="flex-row pb-5">
+                Email -> <p id="userEmail"></p>
+              </div>
+              <div class="flex-row pb-5">
+                Phone -> <p id="userPhone"></p>
+              </div>
+              <div class="flex-row pb-5">
+                Photo -> <p id="userPhoto"></p>
+              </div>
+              <div class="flex-row pb-5">
+                Posts -> <p id="userPosts"></p>
+              </div>
+              <div class="flex-row pb-5">
+                Todos -> <p id="userTodos"></p>
+              </div>
+              <div class="flex-row pb-5">
+                Username -> <p id="userUsername"></p>
+              </div>
+              <div class="flex-row pb-5">
+                Website -> <p id="userWebsite"></p>
+              </div>
+            </div>
         </div>
       </div>
     </div>
@@ -85,6 +125,19 @@
 
           console.log(user);
           alert("Check Console for User Details");
+
+          document.getElementById("userId").innerHTML = JSON.stringify(user.id);
+          document.getElementById("userUsername").innerHTML = JSON.stringify(user.username);
+          document.getElementById("userAlbums").innerHTML = JSON.stringify(user.albums.slice(0, 3));
+          document.getElementById("userComments").innerHTML = JSON.stringify(user.comments.slice(0, 3));
+          document.getElementById("userCompany").innerHTML = JSON.stringify(user.company);
+          document.getElementById("userPhone").innerHTML = JSON.stringify(user.phone);
+          document.getElementById("userPhoto").innerHTML = JSON.stringify(user.photos.slice(0, 3));
+          document.getElementById("userTodos").innerHTML = JSON.stringify(user.todos.slice(0, 3));
+          document.getElementById("userWebsite").innerHTML = JSON.stringify(user.website);
+          document.getElementById("userEmail").innerHTML = JSON.stringify(user.email);
+          document.getElementById("userAddress").innerHTML = JSON.stringify(user.address)
+
         } catch (err) {
           console.log(err);
         }
